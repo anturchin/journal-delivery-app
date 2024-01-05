@@ -5,7 +5,9 @@ import JournalItem from './components/JournalItem/JournalItem';
 import JournalList from './components/JournalList/JournalList';
 import Body from './layouts/Body/Body';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
-import './App.css';
+import JournalForm from './components/JournalForm/JournalForm';
+
+import './App.css'; 
 
 function App() {
 	const data = [
@@ -44,7 +46,7 @@ function App() {
 				</JournalList>
 			</LeftPanel>
 			<Body>
-				Body
+				<JournalForm />
 			</Body>
 		</div>
 	);

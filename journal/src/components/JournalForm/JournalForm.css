@@ -1,0 +1,17 @@
+.journal-form {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.journal-form__input {
+	background: rgba(255, 255, 255, 0.2);
+	color: rgba(255, 255, 255, 0.87);
+	outline: none;
+}
+
+.journal-form__textarea {
+	background: rgba(255, 255, 255, 0.2);
+	color: rgba(255, 255, 255, 0.87);
+	outline: none;
+}
