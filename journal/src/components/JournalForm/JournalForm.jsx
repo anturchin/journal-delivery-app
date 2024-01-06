@@ -42,23 +42,26 @@ const JournalForm = ({updateList}) => {
 		if(!isValid){
 			return;
 		}
-		
+
 		updateList(formProps);
 
 	};
 
+	let styleTitle = formValid.title ? 'journal-form__input' : 'journal-form__input invalid';
+	let styleDate = formValid.date ? 'journal-form__input' : 'journal-form__input invalid';
+	let styleText = formValid.text ? 'journal-form__textarea' : 'journal-form__textarea invalid';
+
 	return (
 		<form className="journal-form" onSubmit={onSubmitForm}>
 			<input 
-				className="journal-form__input" 
+				className={styleTitle}  
 				type="text" 
 				name="title" 
-				style={{border: formValid.title ? undefined : '1px solid red'}}/>
+			/>
 			<input 
-				className="journal-form__input" 
+				className={styleDate}
 				type="date" 
 				name="date"
-				style={{border: formValid.date ? undefined : '1px solid red'}}
 			/>
 			<input 
 				className="journal-form__input" 
@@ -66,9 +69,8 @@ const JournalForm = ({updateList}) => {
 				name="tag" 
 			/>
 			<textarea 
-				className="journal-form__textarea" 
+				className={styleText} 
 				name="text"
-				style={{border: formValid.text ? undefined : '1px solid red'}}
 			>
 			</textarea>
 			<Button text="Сохранить"/>
