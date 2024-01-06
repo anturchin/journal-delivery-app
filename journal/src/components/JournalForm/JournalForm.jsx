@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '../Button/Button';
-import './JournalForm.css';
+import styles from './JournalForm.module.css';
+import cn from 'classnames';
 
 const JournalForm = ({updateList}) => {
 
@@ -47,12 +48,21 @@ const JournalForm = ({updateList}) => {
 
 	};
 
-	let styleTitle = formValid.title ? 'journal-form__input' : 'journal-form__input invalid';
-	let styleDate = formValid.date ? 'journal-form__input' : 'journal-form__input invalid';
-	let styleText = formValid.text ? 'journal-form__textarea' : 'journal-form__textarea invalid';
+	const styleTitle = 
+	formValid.title 
+		? styles['journal-form__input'] 
+		: cn(styles['journal-form__input'], styles['invalid']);
+	const styleDate = 
+	formValid.date 
+		? styles['journal-form__input'] 
+		: cn(styles['journal-form__input'], styles['invalid']);
+	const styleText = 
+	formValid.text 
+		? styles['journal-form__textarea'] 
+		: cn(styles['journal-form__textarea'], styles['invalid']);
 
 	return (
-		<form className="journal-form" onSubmit={onSubmitForm}>
+		<form className={styles['journal-form']} onSubmit={onSubmitForm}>
 			<input 
 				className={styleTitle}  
 				type="text" 
@@ -64,7 +74,7 @@ const JournalForm = ({updateList}) => {
 				name="date"
 			/>
 			<input 
-				className="journal-form__input" 
+				className={styles['journal-form__input']} 
 				type="text" 
 				name="tag" 
 			/>
