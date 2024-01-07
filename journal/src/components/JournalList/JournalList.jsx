@@ -5,7 +5,7 @@ import JournalItem from '../JournalItem/JournalItem';
 
 import './JournalList.css';
 
-function JournalList({ list }) {
+function JournalList({ list, setItem }) {
 
 	const {userId} = useContext(UserContext);
 	
@@ -22,7 +22,7 @@ function JournalList({ list }) {
 	return (
 		<div className='journal-list'>
 			{filteredItems.map(el => (
-				<CardButton key={el.id}>
+				<CardButton key={el.id} onClick={()=> setItem(el)}>
 					<JournalItem 
 						title={el.title}
 						text={el.text}

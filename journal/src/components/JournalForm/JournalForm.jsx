@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import styles from './JournalForm.module.css';
 
 
-const JournalForm = ({updateList}) => {
+const JournalForm = ({updateList, data, onDelete}) => {
 
 	
 	const [formState, dispatchForm]  = useReducer(formReducer, INITIAL_STATE);
@@ -30,6 +30,26 @@ const JournalForm = ({updateList}) => {
 		}
 	};
 
+	useEffect(() => {
+		
+		if(!data){
+			dispatchForm({type: 'CLEAR'});
+			dispatchForm({
+				type: 'SET_VALUE',
+				payload: {
+					userId
+				}
+			});
+		}
+
+		dispatchForm({
+			type: 'SET_VALUE',
+			payload: {
+				...data
+			}
+		});
+	}, [data, userId]);
+
 	useEffect(()=>{	
 		let timerId;
 		if(!isValid.date || !isValid.text || !isValid.title) {
@@ -49,8 +69,14 @@ const JournalForm = ({updateList}) => {
 		if(isFormReadyToSubmit){
 			updateList(values);
 			dispatchForm({type: 'CLEAR'});
+			dispatchForm({
+				type: 'SET_VALUE',
+				payload: {
+					userId
+				}
+			});
 		}
-	}, [isFormReadyToSubmit, values, updateList]);
+	}, [isFormReadyToSubmit, values, updateList, userId]);
 
 	useEffect(()=> {
 		dispatchForm({
@@ -77,6 +103,17 @@ const JournalForm = ({updateList}) => {
 
 	};
 
+	const deleteJournalItem = () => {
+		onDelete(data.id);
+		dispatchForm({type: 'CLEAR'});
+		dispatchForm({
+			type: 'SET_VALUE',
+			payload: {
+				userId
+			}
+		});
+	};
+
 	const styleTitle = 
 	isValid.title 
 		? styles['journal-form__title'] 
@@ -92,7 +129,7 @@ const JournalForm = ({updateList}) => {
 
 	return (
 		<form className={styles['journal-form']} onSubmit={onSubmitForm}>
-			<div>
+			<div className={styles['journal-form__row']}>
 				<input 
 					className={styleTitle}  
 					type="text" 
@@ -101,6 +138,9 @@ const JournalForm = ({updateList}) => {
 					onChange={onChange}
 					ref={titleRef}
 				/>
+				{data?.id && <button onClick={deleteJournalItem} type="button" className={styles['journal-form__button']}>
+					<img src="/archive.svg" alt="archive" />
+				</button>}
 			</div>
 			<div className={styles['journal-form__row']}>
 				<label 
@@ -114,7 +154,7 @@ const JournalForm = ({updateList}) => {
 					type="date" 
 					name="date"
 					id="date"
-					value={values.date}
+					value={values.date ? new Date(values.date).toISOString().slice(0, 10) : ''}
 					onChange={onChange}
 					ref={dateRef}
 				/>

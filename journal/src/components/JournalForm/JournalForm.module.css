@@ -4,6 +4,20 @@
 	gap: 30px;
 }
 
+.journal-form__button {
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+}
+
+.journal-form__button:hover{
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 50%;
+}
+
 .journal-form__input {
 	border: none;
 	background: none;
@@ -43,7 +57,6 @@
 .journal-form__row {
 	display: flex;
 	align-items: center;
-	gap: 50px;
 }
 
 .journal-form__label {

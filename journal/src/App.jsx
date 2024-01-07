@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocalStorage } from './hooks/use-localstorage.hook';
 import { UserContextProvider } from './context/userContext';
 import Header from './components/Header/Header';
@@ -22,13 +23,30 @@ function mapItems(items){
 function App() {
 	
 	const [list, setList] = useLocalStorage('data');
+	const [selectedItem, setSelectedItem] = useState(null);
 	
 	const updateList = data => {
-		setList([...mapItems(list), {
-			...data,
-			date: new Date(data.date),
-			id: list.length > 0 ? Math.max(...list.map(i => i.id)) + 1 : 1
-		}]);
+		if(!data.id) {
+			setList([...mapItems(list), {
+				...data,
+				date: new Date(data.date),
+				id: list.length > 0 ? Math.max(...list.map(i => i.id)) + 1 : 1
+			}]);
+		} else {
+			setList([...mapItems(list).map(i => {
+				if(i.id === data.id) {
+					return {
+						...data
+					};
+				} else {
+					return i;
+				}
+			})]);
+		}
+	};
+
+	const deleteItem = (id) => {
+		setList([...list.filter(i => i.id !== id)]);
 	};
 
 	return (
@@ -36,11 +54,11 @@ function App() {
 			<div className='app'>
 				<LeftPanel>
 					<Header/>
-					<JournalAddButton/>
-					<JournalList list={mapItems(list)}/>
+					<JournalAddButton clearForm={()=> setSelectedItem(null)} />
+					<JournalList list={mapItems(list)} setItem={setSelectedItem}/>
 				</LeftPanel>
 				<Body>
-					<JournalForm updateList={updateList} />
+					<JournalForm updateList={updateList} data={selectedItem} onDelete={deleteItem} />
 				</Body>
 			</div>
 		</UserContextProvider>
