@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { INITIAL_STATE, formReducer } from './JournalForm.state';
 import cn from 'classnames';
 import Button from '../Button/Button';
@@ -10,12 +10,28 @@ const JournalForm = ({updateList}) => {
 	
 	const [formState, dispatchForm]  = useReducer(formReducer, INITIAL_STATE);
 	const {isValid, isFormReadyToSubmit, values} = formState;
-	
-	useEffect(()=>{
-		
+	const titleRef = useRef();
+	const dateRef = useRef();
+	const textRef = useRef();
+
+	const focusError = (isValid) => {
+		switch (true) {
+		case !isValid.title:
+			titleRef.current.focus();
+			break;
+		case !isValid.date:
+			dateRef.current.focus();
+			break;
+		case !isValid.text:
+			textRef.current.focus();
+			break;
+		}
+	};
+
+	useEffect(()=>{	
 		let timerId;
-		
 		if(!isValid.date || !isValid.text || !isValid.title) {
+			focusError(isValid);
 			timerId = setTimeout(()=>{
 				dispatchForm({type: 'RESET_VALIDITY'});
 			}, 2000);
@@ -32,7 +48,7 @@ const JournalForm = ({updateList}) => {
 			updateList(values);
 			dispatchForm({type: 'CLEAR'});
 		}
-	}, [isFormReadyToSubmit]);
+	}, [isFormReadyToSubmit, values, updateList]);
 
 	const onChange = (e) => {
 		dispatchForm({
@@ -72,6 +88,7 @@ const JournalForm = ({updateList}) => {
 					name="title" 
 					value={values.title}
 					onChange={onChange}
+					ref={titleRef}
 				/>
 			</div>
 			<div className={styles['journal-form__row']}>
@@ -88,6 +105,7 @@ const JournalForm = ({updateList}) => {
 					id="date"
 					value={values.date}
 					onChange={onChange}
+					ref={dateRef}
 				/>
 			</div>
 			<div className={styles['journal-form__row']}>
@@ -111,6 +129,7 @@ const JournalForm = ({updateList}) => {
 				name="text"
 				value={values.text}
 				onChange={onChange}
+				ref={textRef}
 			>
 			</textarea>
 			<Button text="Сохранить"/>
