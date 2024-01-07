@@ -143,7 +143,7 @@ const JournalForm = ({updateList}) => {
 				ref={textRef}
 			>
 			</textarea>
-			<Button text="Сохранить"/>
+			<Button>Сохранить</Button>
 		</form>
 	);
 };
