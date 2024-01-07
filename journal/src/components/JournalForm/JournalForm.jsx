@@ -30,15 +30,23 @@ const JournalForm = ({updateList}) => {
 	useEffect(()=> {
 		if(isFormReadyToSubmit){
 			updateList(values);
+			dispatchForm({type: 'CLEAR'});
 		}
 	}, [isFormReadyToSubmit]);
+
+	const onChange = (e) => {
+		dispatchForm({
+			type: 'SET_VALUE',
+			payload: {
+				[e.target.name]: e.target.value
+			}
+		});
+	};
 
 	const onSubmitForm = (e) => {
 		
 		e.preventDefault();
-		const formData = new FormData(e.target);
-		const formProps = Object.fromEntries(formData);
-		dispatchForm({type: 'SUBMIT', payload: formProps});
+		dispatchForm({type: 'SUBMIT'});
 
 	};
 
@@ -62,6 +70,8 @@ const JournalForm = ({updateList}) => {
 					className={styleTitle}  
 					type="text" 
 					name="title" 
+					value={values.title}
+					onChange={onChange}
 				/>
 			</div>
 			<div className={styles['journal-form__row']}>
@@ -76,6 +86,8 @@ const JournalForm = ({updateList}) => {
 					type="date" 
 					name="date"
 					id="date"
+					value={values.date}
+					onChange={onChange}
 				/>
 			</div>
 			<div className={styles['journal-form__row']}>
@@ -90,11 +102,15 @@ const JournalForm = ({updateList}) => {
 					type="text" 
 					name="tag" 
 					id="tag"
+					value={values.tag}
+					onChange={onChange}
 				/>
 			</div>
 			<textarea 
 				className={styleText} 
 				name="text"
+				value={values.text}
+				onChange={onChange}
 			>
 			</textarea>
 			<Button text="Сохранить"/>
