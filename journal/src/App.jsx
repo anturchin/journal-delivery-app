@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLocalStorage } from './hooks/use-localstorage.hook';
 import Header from './components/Header/Header';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import JournalList from './components/JournalList/JournalList';
@@ -8,32 +8,26 @@ import JournalForm from './components/JournalForm/JournalForm';
 
 import './App.css'; 
 
+function mapItems(items){
+	if(!items){
+		return [];
+	}
+	return items.map(i => ({
+		...i,
+		date: new Date(i.date)
+	})); 
+}
+
 function App() {
 	
-	const [list, setList] = useState([]);
+	const [list, setList] = useLocalStorage('data');
 	
-	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem('data'));
-		if(data){
-			setList(data.map(item => ({
-				...item,
-				date: new Date(item.date)
-			})));
-		}
-	}, []);
-
-	useEffect(()=> {
-		if(list.length){
-			localStorage.setItem('data', JSON.stringify(list));
-		}
-	}, [list]);
-
 	const updateList = data => {
-		setList(old => [...old, {
+		setList([...mapItems(list), {
 			title: data.title,
 			text: data.text,
 			date: new Date(data.date),
-			id: old.length > 0 ? Math.max(...old.map(i => i.id)) + 1 : 1
+			id: list.length > 0 ? Math.max(...list.map(i => i.id)) + 1 : 1
 		}]);
 	};
 
@@ -42,7 +36,7 @@ function App() {
 			<LeftPanel>
 				<Header/>
 				<JournalAddButton/>
-				<JournalList list={list}/>
+				<JournalList list={mapItems(list)}/>
 			</LeftPanel>
 			<Body>
 				<JournalForm updateList={updateList} />
