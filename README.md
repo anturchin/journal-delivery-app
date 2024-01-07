@@ -1,1 +1,1 @@
-# flashback-app
+# journal-app
