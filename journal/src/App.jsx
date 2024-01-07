@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/Header/Header';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import JournalList from './components/JournalList/JournalList';
@@ -10,22 +10,23 @@ import './App.css';
 
 function App() {
 	
-	const initialData = [
-		{
-			title: 'Скоро рождество',
-			text: 'Нужно купить подарки',
-			date: new Date(),
-			id: 1
-		},
-		{
-			title: 'Выезд в горы',
-			text: 'Кататься на сноуборде',
-			date: new Date(),
-			id: 2
+	const [list, setList] = useState([]);
+	
+	useEffect(() => {
+		const data = JSON.parse(localStorage.getItem('data'));
+		if(data){
+			setList(data.map(item => ({
+				...item,
+				date: new Date(item.date)
+			})));
 		}
-	];
+	}, []);
 
-	const [list, setList] = useState(initialData);
+	useEffect(()=> {
+		if(list.length){
+			localStorage.setItem('data', JSON.stringify(list));
+		}
+	}, [list]);
 
 	const updateList = data => {
 		setList(old => [...old, {

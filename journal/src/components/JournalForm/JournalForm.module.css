@@ -7,13 +7,13 @@
 .journal-form__input {
 	border: none;
 	background: none;
-	color: rgba(255, 255, 255, 0.87);
 	font-size: 14px;
 	font-weight: 600;
 	line-height: normal;
 	font-family: 'Source Sans 3', sans-serif;
 	border-bottom: 1px solid #333;
 	width: 100%;
+	color: rgba(255, 255, 255, 0.87);
 }
 
 .journal-form__textarea {
@@ -32,6 +32,7 @@
 	border: none;
 	background: none;
 	font-size: 32px;
+	color: rgba(255, 255, 255, 0.87);
 	font-weight: 600;
 	line-height: normal;
 	font-family: 'Source Sans 3', sans-serif;
