@@ -1,4 +1,5 @@
 import { useLocalStorage } from './hooks/use-localstorage.hook';
+import { UserContextProvider } from './context/userContext';
 import Header from './components/Header/Header';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import JournalList from './components/JournalList/JournalList';
@@ -24,24 +25,25 @@ function App() {
 	
 	const updateList = data => {
 		setList([...mapItems(list), {
-			title: data.title,
-			text: data.text,
+			...data,
 			date: new Date(data.date),
 			id: list.length > 0 ? Math.max(...list.map(i => i.id)) + 1 : 1
 		}]);
 	};
 
 	return (
-		<div className='app'>
-			<LeftPanel>
-				<Header/>
-				<JournalAddButton/>
-				<JournalList list={mapItems(list)}/>
-			</LeftPanel>
-			<Body>
-				<JournalForm updateList={updateList} />
-			</Body>
-		</div>
+		<UserContextProvider>
+			<div className='app'>
+				<LeftPanel>
+					<Header/>
+					<JournalAddButton/>
+					<JournalList list={mapItems(list)}/>
+				</LeftPanel>
+				<Body>
+					<JournalForm updateList={updateList} />
+				</Body>
+			</div>
+		</UserContextProvider>
 	);
 }
 
